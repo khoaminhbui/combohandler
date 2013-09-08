@@ -1,6 +1,6 @@
 This is an implementation of combo loading in Java with Spring MVC.
 
-On web.xnl, add a servlet config for combo:
+On web.xml, add a servlet config for combo:
 <servlet-mapping>
    <servlet-name>my-servlet-name</servlet-name>
    <url-pattern>/combo/*</url-pattern>
