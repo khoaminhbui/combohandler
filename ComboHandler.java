@@ -1,4 +1,4 @@
-package com.iss.idental.controller;
+package com.khoaminhbui.controller;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -20,12 +20,7 @@ import java.util.regex.Pattern;
 public class ComboHandler {
    private String YUIPath = null;
    private String YUIResourcePath = null;
-   private String YUI2in3Path = null;
-   private String YUI2in3ResourcePath = null;
-   private String ISSYUIPath = null;
-   private String ISSYUIResourcePath = null;
-   private String ISSScriptPath = null;
-   private String ISSScriptResourcePath = null;
+
    private final String excludedRelativeUrlRegex = "data:";
    private final String relativeUrlRegex = "url\\(\\s*(?!/|(?:http))([^\\)]+)\\s*\\)";
    private Pattern relativeUrlPattern = Pattern.compile(relativeUrlRegex);
@@ -49,6 +44,7 @@ public class ComboHandler {
             ext = FilenameUtils.getExtension(fileName);
             css = "css".equalsIgnoreCase(ext);
 
+            // content type must be set before any writing to response.
             if (css) {
                response.setContentType("text/css");
             }
@@ -64,141 +60,6 @@ public class ComboHandler {
             String line;
             while (it.hasNext()) {
                line = handleRelativeUrl(YUIResourcePath, fileName, it.nextLine()) + System.getProperty("line.separator");
-               out.write(line.getBytes());
-            }
-         }
-         else {
-            out.write(FileUtils.readFileToByteArray(srcFile));
-            out.write(System.getProperty("line.separator").getBytes());
-         }
-      }
-
-      response.setStatus(HttpServletResponse.SC_OK);
-   }
-
-   @RequestMapping(value = "/yui2in3", method = RequestMethod.GET)
-   public @ResponseBody
-   void getYUI2in3Resources(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      if (YUI2in3Path == null) {
-         YUI2in3Path = request.getSession().getServletContext().getRealPath("") + "/library/yui/2in3/2.9.0/build/";
-         YUI2in3ResourcePath = request.getContextPath() + "/library/yui/2in3/2.9.0/build/";
-      }
-
-      String ext = null;
-      boolean css = false;
-
-      String[] fileNames = request.getQueryString().split("&");
-      ServletOutputStream out = response.getOutputStream();
-      for (String fileName : fileNames) {
-         if (ext == null) {
-            ext = FilenameUtils.getExtension(fileName);
-            css = "css".equalsIgnoreCase(ext);
-
-            if (css) {
-               response.setContentType("text/css");
-            }
-            else {
-               response.setContentType("application/javascript");
-            }
-         }
-
-         File srcFile = new File(YUI2in3Path, fileName);
-
-         if (css) {
-            LineIterator it = FileUtils.lineIterator(srcFile, "UTF-8");
-            String line;
-            while (it.hasNext()) {
-               line = handleRelativeUrl(YUI2in3ResourcePath, fileName, it.nextLine()) + System.getProperty("line.separator");
-               out.write(line.getBytes());
-            }
-         }
-         else {
-            out.write(FileUtils.readFileToByteArray(srcFile));
-            out.write(System.getProperty("line.separator").getBytes());
-         }
-      }
-
-      response.setStatus(HttpServletResponse.SC_OK);
-   }
-
-   @RequestMapping(value = "/iss_yui", method = RequestMethod.GET)
-   public @ResponseBody
-   void getISSYUIResources(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      if (ISSYUIPath == null) {
-         ISSYUIPath = request.getSession().getServletContext().getRealPath("") + "/library/yui/iss_yui/";
-         ISSYUIResourcePath = request.getContextPath() + "/library/yui/iss_yui/";
-      }
-
-      String ext = null;
-      boolean css = false;
-
-      String[] fileNames = request.getQueryString().split("&");
-      ServletOutputStream out = response.getOutputStream();
-      for (String fileName : fileNames) {
-         if (ext == null) {
-            ext = FilenameUtils.getExtension(fileName);
-            css = "css".equalsIgnoreCase(ext);
-
-            if (css) {
-               response.setContentType("text/css");
-            }
-            else {
-               response.setContentType("application/javascript");
-            }
-         }
-
-         File srcFile = new File(ISSYUIPath, fileName);
-
-         if (css) {
-            LineIterator it = FileUtils.lineIterator(srcFile, "UTF-8");
-            String line;
-            while (it.hasNext()) {
-               line = handleRelativeUrl(ISSYUIResourcePath, fileName, it.nextLine()) + System.getProperty("line.separator");
-               out.write(line.getBytes());
-            }
-         }
-         else {
-            out.write(FileUtils.readFileToByteArray(srcFile));
-            out.write(System.getProperty("line.separator").getBytes());
-         }
-      }
-
-      response.setStatus(HttpServletResponse.SC_OK);
-   }
-
-   @RequestMapping(value = "/iss_script", method = RequestMethod.GET)
-   public @ResponseBody
-   void getISSScriptResources(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      if (ISSScriptPath == null) {
-         ISSScriptPath = request.getSession().getServletContext().getRealPath("") + "/";
-         ISSScriptResourcePath = request.getContextPath() + "/";
-      }
-
-      String ext = null;
-      boolean css = false;
-
-      String[] fileNames = request.getQueryString().split("&");
-      ServletOutputStream out = response.getOutputStream();
-      for (String fileName : fileNames) {
-         if (ext == null) {
-            ext = FilenameUtils.getExtension(fileName);
-            css = "css".equalsIgnoreCase(ext);
-
-            if (css) {
-               response.setContentType("text/css");
-            }
-            else {
-               response.setContentType("application/javascript");
-            }
-         }
-
-         File srcFile = new File(ISSScriptPath, fileName);
-
-         if (css) {
-            LineIterator it = FileUtils.lineIterator(srcFile, "UTF-8");
-            String line;
-            while (it.hasNext()) {
-               line = handleRelativeUrl(ISSScriptResourcePath, fileName, it.nextLine()) + System.getProperty("line.separator");
                out.write(line.getBytes());
             }
          }
