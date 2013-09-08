@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public class ComboHandler {
    private String YUIPath = null;
    private String YUIResourcePath = null;
+   private final String YUIRelativePath = "/library/yui/3.6.0/build/";
 
    private final String excludedRelativeUrlRegex = "data:";
    private final String relativeUrlRegex = "url\\(\\s*(?!/|(?:http))([^\\)]+)\\s*\\)";
@@ -30,8 +31,8 @@ public class ComboHandler {
    public @ResponseBody
    void getYUIResources(HttpServletRequest request, HttpServletResponse response) throws IOException {
       if (YUIPath == null) {
-         YUIPath = request.getSession().getServletContext().getRealPath("") + "/library/yui/3.6.0/build/";
-         YUIResourcePath = request.getContextPath() + "/library/yui/3.6.0/build/";
+         YUIPath = request.getSession().getServletContext().getRealPath("") + YUIRelativePath;
+         YUIResourcePath = request.getContextPath() + YUIRelativePath;
       }
 
       String ext = null;
