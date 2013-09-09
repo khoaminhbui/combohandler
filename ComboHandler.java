@@ -73,7 +73,7 @@ public class ComboHandler {
       response.setStatus(HttpServletResponse.SC_OK);
    }
 
-   private Object handleRelativeUrl(String web3rdPartyYUIUrl, String fileName, String line) {
+   private String handleRelativeUrl(String web3rdPartyYUIUrl, String fileName, String line) {
       Matcher relativeUrlMatcher = this.relativeUrlPattern.matcher(line);
       if (relativeUrlMatcher.find()) {
          StringBuffer s = new StringBuffer(line.length() * 2);
@@ -92,7 +92,7 @@ public class ComboHandler {
          while (relativeUrlMatcher.find());
          relativeUrlMatcher.appendTail(s);
 
-         return s;
+         return s.toString();
       }
 
       return line;
