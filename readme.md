@@ -6,5 +6,4 @@ On web.xml, add a servlet mapping config for combo path:
 
 On front-end, send request with this formula:  
 `contextPath + '/combo' + '/yui?' + uris.join('&')`
-
 Where `uris` is an array of scripts that will be combine into single request.
